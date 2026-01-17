@@ -8,6 +8,7 @@ class HomeTab extends StatelessWidget {
     return Column(
       children: [
         HomeHeader(),
+        SizedBox(height: 24),
         Expanded(
           child: ListView.separated(
             padding: EdgeInsets.symmetric(horizontal: 16),
