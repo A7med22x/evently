@@ -41,6 +41,16 @@ class AppTheme {
         borderSide: BorderSide(color: offWhite),
       ),
     ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: primaryLight,
+        foregroundColor: white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.circular(16),
+        ),
+        textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+      ),
+    ),
     listTileTheme: ListTileThemeData(
       tileColor: white,
       minTileHeight: 0,
@@ -49,7 +59,7 @@ class AppTheme {
         borderRadius: BorderRadiusGeometry.circular(16),
       ),
       titleTextStyle: TextStyle(
-        fontSize: 16,
+        fontSize: 20,
         fontWeight: FontWeight.w500,
         color: black,
       ),
