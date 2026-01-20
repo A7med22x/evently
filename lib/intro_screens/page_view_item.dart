@@ -1,4 +1,3 @@
-import 'package:evently/home_screen.dart';
 import 'package:evently/intro_screens/intro_screen_body.dart';
 import 'package:evently/intro_screens/intro_screen_header.dart';
 import 'package:evently/models/intro_screen_model.dart';
@@ -9,19 +8,25 @@ class PageViewItem extends StatelessWidget {
   int currentIndex;
   Function() onNext;
   Function() onBack;
+  Function() onSkip;
 
   PageViewItem({
     required this.introScreenModel,
     required this.currentIndex,
     required this.onNext,
     required this.onBack,
+    required this.onSkip,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        IntroScreenHeader(currentIndex: currentIndex, onPressed: onBack),
+        IntroScreenHeader(
+          currentIndex: currentIndex,
+          onBack: onBack,
+          onSkip: onSkip,
+        ),
         SizedBox(height: 26),
         Image.asset(
           'assets/images/${introScreenModel.imageName}.png',

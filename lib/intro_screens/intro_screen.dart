@@ -2,6 +2,7 @@ import 'package:evently/home_screen.dart';
 import 'package:evently/intro_screens/page_view_item.dart';
 import 'package:evently/models/intro_screen_model.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class IntroScreen extends StatefulWidget {
   static const String routeName = '/intro';
@@ -39,6 +40,9 @@ class _IntroScreenState extends State<IntroScreen> {
                     currentIndex: currentIndex,
                     onBack: onBackBottonClicked,
                     onNext: onNextBottonClicked,
+                    onSkip: () {
+                      onSkipBottonClicked(context);
+                    },
                   ),
                   itemCount: IntroScreenModel.introScreenModels.length,
                 ),
@@ -56,7 +60,7 @@ class _IntroScreenState extends State<IntroScreen> {
       setState(() {});
       pageController.jumpToPage(currentIndex);
     } else if (currentIndex == IntroScreenModel.introScreenModels.length - 1) {
-      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      onSkipBottonClicked(context);
     }
   }
 
@@ -66,5 +70,12 @@ class _IntroScreenState extends State<IntroScreen> {
       setState(() {});
       pageController.jumpToPage(currentIndex);
     }
+  }
+
+  Future<void> onSkipBottonClicked(BuildContext context) async {
+    Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+
+    SharedPreferences preferences = await .getInstance();
+    preferences.setBool('hasSeenIntro', true);
   }
 }

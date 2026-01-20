@@ -1,13 +1,13 @@
 import 'package:evently/app_theme.dart';
-import 'package:evently/home_screen.dart';
 import 'package:evently/widgets/default_elevated_button.dart';
 import 'package:flutter/material.dart';
 
 class IntroScreenHeader extends StatelessWidget {
   int currentIndex;
-  Function() onPressed;
+  Function() onBack;
+  Function() onSkip;
 
-  IntroScreenHeader({required this.currentIndex, required this.onPressed});
+  IntroScreenHeader({required this.currentIndex, required this.onBack, required this.onSkip});
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -16,7 +16,7 @@ class IntroScreenHeader extends StatelessWidget {
         (currentIndex == 0)
             ? SizedBox(width: 8)
             : ElevatedButton(
-                onPressed: onPressed,
+                onPressed: onBack,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.white,
                   foregroundColor: AppTheme.primaryLight,
@@ -35,11 +35,7 @@ class IntroScreenHeader extends StatelessWidget {
             ? SizedBox(width: 8)
             : DefaultElevatedButton(
                 label: 'Skip',
-                onPressed: () {
-                  Navigator.of(
-                    context,
-                  ).pushReplacementNamed(HomeScreen.routeName);
-                },
+                onPressed: onSkip,
                 width: 80,
                 height: 32,
                 fontSize: 14,

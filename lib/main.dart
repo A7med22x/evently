@@ -2,13 +2,18 @@ import 'package:evently/app_theme.dart';
 import 'package:evently/home_screen.dart';
 import 'package:evently/intro_screens/intro_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(const EventlyApp());
+Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  final hasSeenIntro = preferences.getBool('hasSeenIntro') ?? false;
+  runApp(EventlyApp(hasSeenIntro: hasSeenIntro,));
 }
 
 class EventlyApp extends StatelessWidget {
-  const EventlyApp({super.key});
+  final bool hasSeenIntro;
+  const EventlyApp({super.key, required this.hasSeenIntro});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +23,7 @@ class EventlyApp extends StatelessWidget {
         HomeScreen.routeName: (_) => HomeScreen(),
         IntroScreen.routeName: (_) => IntroScreen(),
       },
-      initialRoute: IntroScreen.routeName,
+      initialRoute: hasSeenIntro ? HomeScreen.routeName : IntroScreen.routeName,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.light,
