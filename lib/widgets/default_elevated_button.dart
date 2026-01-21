@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class DefaultElevatedButton extends StatelessWidget {
   Function() onPressed;
@@ -9,7 +10,7 @@ class DefaultElevatedButton extends StatelessWidget {
   FontWeight? fontWeight;
   Color? backgroundColor;
   Color? foregroundColor;
-
+  String? icon;
 
   DefaultElevatedButton({
     required this.label,
@@ -20,6 +21,7 @@ class DefaultElevatedButton extends StatelessWidget {
     this.fontWeight,
     this.backgroundColor,
     this.foregroundColor,
+    this.icon,
   });
 
   @override
@@ -33,12 +35,23 @@ class DefaultElevatedButton extends StatelessWidget {
           width ?? MediaQuery.sizeOf(context).width,
           height ?? 48,
         ),
-        textStyle: TextStyle(
-          fontSize: fontSize,
-          fontWeight: fontWeight, 
-        )
+        textStyle: TextStyle(fontSize: fontSize, fontWeight: fontWeight),
       ),
-      child: Text(label),
+      child: (icon == null)
+          ? Text(label)
+          : Row(
+              mainAxisAlignment: .center,
+              children: [
+                Image.asset(
+                  'assets/images/$icon.png',
+                  width: 24,
+                  height: 24,
+                  fit: .scaleDown,
+                ),
+                SizedBox(width: 16),
+                Text(label),
+              ],
+            ),
     );
   }
 }

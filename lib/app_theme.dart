@@ -8,7 +8,8 @@ class AppTheme {
   static const Color white = Color(0xffFFFFFF);
   static const Color offWhite = Color(0xffF0F0F0);
   static const Color black = Color(0xff1C1C1C);
-  static const Color grey = Color(0xff686868);
+  static const Color darkGrey = Color(0xff686868);
+  static const Color grey = Color(0xffB9B9B9);
   static const Color lightGrey = Color(0xffE9EAEB);
 
   static ThemeData lightTheme = ThemeData(
@@ -16,7 +17,7 @@ class AppTheme {
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: white,
       selectedItemColor: primaryLight,
-      unselectedItemColor: grey,
+      unselectedItemColor: darkGrey,
       type: .fixed,
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -30,7 +31,7 @@ class AppTheme {
       hintStyle: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w400,
-        color: grey,
+        color: darkGrey,
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
@@ -51,6 +52,16 @@ class AppTheme {
         textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
       ),
     ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: primaryLight,
+        textStyle: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          decoration: .underline,
+        ),
+      ),
+    ),
     listTileTheme: ListTileThemeData(
       tileColor: white,
       minTileHeight: 0,
@@ -65,6 +76,11 @@ class AppTheme {
       ),
     ),
     textTheme: TextTheme(
+      headlineSmall: TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.w600,
+        color: primaryLight,
+      ),
       titleLarge: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w500,
@@ -78,7 +94,7 @@ class AppTheme {
       titleSmall: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w400,
-        color: grey,
+        color: darkGrey,
       ),
     ),
   );

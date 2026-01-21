@@ -37,7 +37,7 @@ class IntroScreenBody extends StatelessWidget {
             body,
             style: textTheme.titleMedium!.copyWith(
               fontWeight: FontWeight.w400,
-              color: AppTheme.grey,
+              color: AppTheme.darkGrey,
             ),
           ),
         ),

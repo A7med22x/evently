@@ -1,13 +1,15 @@
+import 'package:evently/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class DefaultTextFormFiled extends StatelessWidget {
+class DefaultTextFormFiled extends StatefulWidget {
   String hintText;
   String? prefixIconImageName;
   String? suffixIconImageName;
   void Function(String)? onChanged;
   String? Function(String?)? validator;
   TextEditingController? controller;
+  bool isPassword;
 
   DefaultTextFormFiled({
     required this.hintText,
@@ -16,32 +18,55 @@ class DefaultTextFormFiled extends StatelessWidget {
     this.controller,
     this.onChanged,
     this.validator,
+    this.isPassword = false,
   });
+
+  @override
+  State<DefaultTextFormFiled> createState() => _DefaultTextFormFiledState();
+}
+
+class _DefaultTextFormFiledState extends State<DefaultTextFormFiled> {
+  late bool isObscure = widget.isPassword;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       decoration: InputDecoration(
-        hintText: hintText,
-        prefixIcon: prefixIconImageName == null
+        hintText: widget.hintText,
+        prefixIcon: widget.prefixIconImageName == null
             ? null
             : Padding(
                 padding: const EdgeInsets.all(12),
                 child: SvgPicture.asset(
-                  'assets/icons/$prefixIconImageName.svg',
+                  'assets/icons/${widget.prefixIconImageName}.svg',
                 ),
               ),
-        suffixIcon: suffixIconImageName == null
+        suffixIcon: widget.isPassword
+            ? IconButton(
+                onPressed: () {
+                  isObscure = !isObscure;
+                  setState(() {});
+                },
+                icon: Icon(
+                  isObscure
+                      ? Icons.visibility_outlined
+                      : Icons.visibility_off_outlined,
+                  color: AppTheme.grey,
+                ),
+              )
+            : widget.suffixIconImageName == null
             ? null
             : Padding(
                 padding: const EdgeInsets.all(12),
                 child: SvgPicture.asset(
-                  'assets/icons/$suffixIconImageName.svg',
+                  'assets/icons/${widget.suffixIconImageName}.svg',
                 ),
               ),
       ),
-      onChanged: onChanged,
-      controller: controller,
+      onChanged: widget.onChanged,
+      controller: widget.controller,
+      validator: widget.validator,
+      obscureText: isObscure,
     );
   }
 }
