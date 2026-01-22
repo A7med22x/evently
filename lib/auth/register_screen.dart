@@ -1,8 +1,8 @@
 import 'package:evently/app_theme.dart';
+import 'package:evently/home_screen.dart';
 import 'package:evently/widgets/default_elevated_button.dart';
 import 'package:evently/widgets/default_text_form_filed.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String routeName = '/register';
@@ -115,5 +115,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  void register() {}
+  void register() {
+    Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+  }
 }
