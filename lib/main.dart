@@ -2,6 +2,7 @@ import 'package:evently/app_theme.dart';
 import 'package:evently/auth/login_screen.dart';
 import 'package:evently/auth/register_screen.dart';
 import 'package:evently/eventScreens/create_event_screen.dart';
+import 'package:evently/eventScreens/edit_event_screen.dart';
 import 'package:evently/eventScreens/event_details.dart';
 import 'package:evently/home_screen.dart';
 import 'package:evently/intro_screens/intro_screen.dart';
@@ -32,6 +33,7 @@ class EventlyApp extends StatelessWidget {
         LoginScreen.routeName: (_) => LoginScreen(),
         CreateEventScreen.routeName: (_) => CreateEventScreen(),
         EventDetails.routeName: (_) => EventDetails(),
+        EditEventScreen.routeName: (_) => EditEventScreen(),
       },
       initialRoute: hasSeenIntro
           ? LoginScreen.routeName

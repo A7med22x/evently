@@ -1,9 +1,9 @@
 import 'package:evently/app_theme.dart';
+import 'package:evently/eventScreens/edit_event_screen.dart';
 import 'package:evently/firebase_service.dart';
 import 'package:evently/models/event_model.dart';
 import 'package:evently/widgets/arrow_back.dart';
 import 'package:evently/widgets/default_text_form_filed.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -11,16 +11,18 @@ import 'package:intl/intl.dart';
 class EventDetails extends StatelessWidget {
   static const String routeName = '/event details';
   late EventModel event;
+  late TextEditingController descriptionController;
 
   @override
   Widget build(BuildContext context) {
     event = ModalRoute.of(context)!.settings.arguments as EventModel;
     TextTheme textTheme = Theme.of(context).textTheme;
+    descriptionController = TextEditingController(text: event.description);
 
     return Scaffold(
       appBar: AppBar(
         leading: ArrowBack(),
-        title: Text('Add event'),
+        title: Text('Event details'),
         actions: [
           Container(
             width: 32,
@@ -32,7 +34,9 @@ class EventDetails extends StatelessWidget {
             clipBehavior: .antiAlias,
             child: IconButton(
               onPressed: () {
-                Navigator.of(context).pushNamed(routeName);
+                Navigator.of(
+                  context,
+                ).pushNamed(EditEventScreen.routeName, arguments: event);
               },
               icon: SvgPicture.asset('assets/icons/edit.svg'),
             ),
@@ -128,7 +132,8 @@ class EventDetails extends StatelessWidget {
                 Text('Description', style: textTheme.titleMedium),
                 SizedBox(height: 8),
                 DefaultTextFormFiled(
-                  hintText: event.description,
+                  hintText: '',
+                  controller: descriptionController,
                   readOnly: true,
                   maxLines: 5,
                 ),
