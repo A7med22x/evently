@@ -1,8 +1,14 @@
 import 'package:evently/app_theme.dart';
+import 'package:evently/models/event_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
 class EventItem extends StatelessWidget {
+  EventModel event;
+
+  EventItem(this.event);
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
@@ -14,7 +20,7 @@ class EventItem extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadiusGeometry.circular(16),
           child: Image.asset(
-            'assets/images/sport.png',
+            'assets/images/${event.category.imageName}.png',
             height: screenSize.height * 0.23,
             width: double.infinity,
             fit: BoxFit.fill,
@@ -28,7 +34,7 @@ class EventItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           child: Text(
-            '21 Jan',
+            DateFormat('d MMM').format(event.dateTime),
             style: textTheme.titleMedium!.copyWith(
               fontWeight: FontWeight.w600,
               color: primaryColor,
@@ -49,7 +55,7 @@ class EventItem extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    'This is a Birthday Party ',
+                    event.title,
                     style: textTheme.titleSmall!.copyWith(
                       color: AppTheme.black,
                     ),

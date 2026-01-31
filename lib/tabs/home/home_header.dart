@@ -9,7 +9,7 @@ class HomeHeader extends StatefulWidget {
 
 class _HomeHeaderState extends State<HomeHeader> {
   int currentIndex = 0;
- 
+
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
@@ -50,6 +50,8 @@ class _HomeHeaderState extends State<HomeHeader> {
               onTap: (index) {
                 if (currentIndex == index) return;
                 currentIndex = index;
+                CategoryModel selectedCategory =
+                    CategoryModel.Categories[index - 1];
                 setState(() {});
               },
             ),
