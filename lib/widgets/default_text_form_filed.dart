@@ -11,6 +11,7 @@ class DefaultTextFormFiled extends StatefulWidget {
   TextEditingController? controller;
   bool isPassword;
   int maxLines;
+  bool readOnly;
 
   DefaultTextFormFiled({
     required this.hintText,
@@ -21,6 +22,7 @@ class DefaultTextFormFiled extends StatefulWidget {
     this.validator,
     this.isPassword = false,
     this.maxLines = 1,
+    this.readOnly = false,
   });
 
   @override
@@ -72,6 +74,7 @@ class _DefaultTextFormFiledState extends State<DefaultTextFormFiled> {
       autovalidateMode: .onUserInteraction,
       onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
       maxLines: widget.maxLines,
+      readOnly: widget.readOnly,
     );
   }
 }

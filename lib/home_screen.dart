@@ -1,4 +1,4 @@
-import 'package:evently/create_event_screen.dart';
+import 'package:evently/eventScreens/create_event_screen.dart';
 import 'package:evently/nav_bar_icon.dart';
 import 'package:evently/tabs/favorite/favorite_tab.dart';
 import 'package:evently/tabs/home/home_tab.dart';

@@ -1,19 +1,20 @@
 import 'package:evently/app_theme.dart';
 import 'package:evently/auth/login_screen.dart';
 import 'package:evently/auth/register_screen.dart';
-import 'package:evently/create_event_screen.dart';
+import 'package:evently/eventScreens/create_event_screen.dart';
+import 'package:evently/eventScreens/event_details.dart';
 import 'package:evently/home_screen.dart';
 import 'package:evently/intro_screens/intro_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<void> main() async{
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   final hasSeenIntro = preferences.getBool('hasSeenIntro') ?? false;
   await Firebase.initializeApp();
-  runApp(EventlyApp(hasSeenIntro: hasSeenIntro,));
+  runApp(EventlyApp(hasSeenIntro: hasSeenIntro));
 }
 
 class EventlyApp extends StatelessWidget {
@@ -30,8 +31,11 @@ class EventlyApp extends StatelessWidget {
         RegisterScreen.routeName: (_) => RegisterScreen(),
         LoginScreen.routeName: (_) => LoginScreen(),
         CreateEventScreen.routeName: (_) => CreateEventScreen(),
+        EventDetails.routeName: (_) => EventDetails(),
       },
-      initialRoute: hasSeenIntro ? LoginScreen.routeName : IntroScreen.routeName,
+      initialRoute: hasSeenIntro
+          ? LoginScreen.routeName
+          : IntroScreen.routeName,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.light,

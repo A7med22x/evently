@@ -22,7 +22,7 @@ class AppTheme {
         fontSize: 18,
         fontWeight: FontWeight.w500,
         color: black,
-      )
+      ),
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: white,
