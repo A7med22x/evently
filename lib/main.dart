@@ -4,6 +4,7 @@ import 'package:evently/auth/register_screen.dart';
 import 'package:evently/create_event_screen.dart';
 import 'package:evently/home_screen.dart';
 import 'package:evently/intro_screens/intro_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,6 +12,7 @@ Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   final hasSeenIntro = preferences.getBool('hasSeenIntro') ?? false;
+  await Firebase.initializeApp();
   runApp(EventlyApp(hasSeenIntro: hasSeenIntro,));
 }
 
