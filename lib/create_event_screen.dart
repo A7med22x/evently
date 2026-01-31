@@ -1,4 +1,5 @@
 import 'package:evently/models/category_model.dart';
+import 'package:evently/models/event_model.dart';
 import 'package:evently/tabs/home/tab_item.dart';
 import 'package:evently/widgets/arrow_back.dart';
 import 'package:evently/widgets/default_elevated_button.dart';
@@ -176,6 +177,22 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   }
 
   void createEvent() {
-    if (formKey.currentState!.validate()) {}
+    if (formKey.currentState!.validate() &&
+        selectedDate != null &&
+        selectedTime != null) {
+      DateTime dateTime = DateTime(
+        selectedDate!.year,
+        selectedDate!.month,
+        selectedDate!.day,
+        selectedTime!.hour,
+        selectedTime!.minute,
+      );
+      EventModel event = EventModel(
+        category: selectedCategory,
+        title: titleController.text,
+        description: descriptionController.text,
+        dateTime: dateTime,
+      );
+    }
   }
 }
