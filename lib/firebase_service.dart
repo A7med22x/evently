@@ -10,6 +10,7 @@ class FirebaseService {
                 EventModel.fromJson(snapshot.data()!),
             toFirestore: (event, _) => event.toJson(),
           );
+
   static Future<void> createEvent(EventModel event) {
     CollectionReference<EventModel> eventCollection = getEventCollection();
     DocumentReference<EventModel> doc = eventCollection.doc();
@@ -23,5 +24,11 @@ class FirebaseService {
         .orderBy('timestamp')
         .get();
     return querySnapshot.docs.map((docSnapshot) => docSnapshot.data()).toList();
+  }
+
+  static Future<void> onEventDelete(EventModel event) {
+    CollectionReference<EventModel> eventCollection = getEventCollection();
+    DocumentReference<EventModel> doc = eventCollection.doc(event.id);
+    return doc.delete();
   }
 }
