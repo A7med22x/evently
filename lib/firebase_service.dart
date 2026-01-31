@@ -31,4 +31,16 @@ class FirebaseService {
     DocumentReference<EventModel> doc = eventCollection.doc(event.id);
     return doc.delete();
   }
+
+  static Future<void> onEditEvent(EventModel event) {
+    CollectionReference<EventModel> eventCollection = getEventCollection();
+    DocumentReference<EventModel> doc = eventCollection.doc(event.id);
+    
+    return doc.update({
+      'categoryId': event.category.id,
+      'title': event.title,
+      'description': event.description,
+      'timestamp': Timestamp.fromDate(event.dateTime),
+    });
+  }
 }

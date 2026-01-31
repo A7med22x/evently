@@ -9,6 +9,7 @@ class HomeHeader extends StatefulWidget {
 
 class _HomeHeaderState extends State<HomeHeader> {
   int currentIndex = 0;
+  late CategoryModel selectedCategory = CategoryModel.Categories[currentIndex];
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +51,6 @@ class _HomeHeaderState extends State<HomeHeader> {
               onTap: (index) {
                 if (currentIndex == index) return;
                 currentIndex = index;
-                CategoryModel selectedCategory =
-                    CategoryModel.Categories[index - 1];
                 setState(() {});
               },
             ),

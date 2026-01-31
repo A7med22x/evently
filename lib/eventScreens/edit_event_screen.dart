@@ -20,18 +20,23 @@ class _EditEventScreenState extends State<EditEventScreen> {
   int currentIndex = 0;
   late EventModel event;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  late TextEditingController titleController;
-  late TextEditingController descriptionController;
-  DateTime? selectedDate;
-  TimeOfDay? selectedTime;
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  late DateTime selectedDate = event.dateTime;
+  late TimeOfDay selectedTime = TimeOfDay.fromDateTime(event.dateTime);
   DateFormat dateFormat = DateFormat('MMM d, yyy');
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     event = ModalRoute.of(context)!.settings.arguments as EventModel;
+    titleController.text = event.title;
+    descriptionController.text = event.description;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-    titleController = TextEditingController(text: event.title);
-    descriptionController = TextEditingController(text: event.description);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -43,9 +48,9 @@ class _EditEventScreenState extends State<EditEventScreen> {
             crossAxisAlignment: .start,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.symmetric(horizontal: 16),
                 child: ClipRRect(
-                  borderRadius: BorderRadiusGeometry.circular(16),
+                  borderRadius: BorderRadius.circular(16),
                   child: Image.asset(
                     'assets/images/${event.category.imageName}.png',
                     width: .infinity,
@@ -127,7 +132,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                               context: context,
                               firstDate: DateTime.now(),
                               lastDate: DateTime.now().add(Duration(days: 365)),
-                              initialDate: event.dateTime,
+                              initialDate: selectedDate,
                               initialEntryMode: .calendarOnly,
                             );
                             if (date != null) {
@@ -135,11 +140,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                               setState(() {});
                             }
                           },
-                          child: Text(
-                            selectedDate == null
-                                ? dateFormat.format(event.dateTime)
-                                : dateFormat.format(selectedDate!),
-                          ),
+                          child: Text(dateFormat.format(selectedDate)),
                         ),
                       ],
                     ),
@@ -153,9 +154,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                           onPressed: () async {
                             TimeOfDay? time = await showTimePicker(
                               context: context,
-                              initialTime: TimeOfDay.fromDateTime(
-                                event.dateTime,
-                              ),
+                              initialTime: selectedTime,
                               initialEntryMode: .dialOnly,
                             );
                             if (time != null) {
@@ -163,19 +162,14 @@ class _EditEventScreenState extends State<EditEventScreen> {
                               setState(() {});
                             }
                           },
-                          child: Text(
-                            selectedTime?.format(context) ??
-                                TimeOfDay.fromDateTime(
-                                  event.dateTime,
-                                ).format(context),
-                          ),
+                          child: Text(selectedTime.format(context)),
                         ),
                       ],
                     ),
                     SizedBox(height: 16),
                     DefaultElevatedButton(
                       label: 'Update event',
-                      onPressed: createEvent,
+                      onPressed: updateEvent,
                     ),
                   ],
                 ),
@@ -187,24 +181,23 @@ class _EditEventScreenState extends State<EditEventScreen> {
     );
   }
 
-  void createEvent() {
-    if (formKey.currentState!.validate() &&
-        selectedDate != null &&
-        selectedTime != null) {
+  void updateEvent() {
+    if (formKey.currentState!.validate()) {
       DateTime dateTime = DateTime(
-        selectedDate!.year,
-        selectedDate!.month,
-        selectedDate!.day,
-        selectedTime!.hour,
-        selectedTime!.minute,
+        selectedDate.year,
+        selectedDate.month,
+        selectedDate.day,
+        selectedTime.hour,
+        selectedTime.minute,
       );
-      EventModel eventModified = EventModel(
+      event = EventModel(
+        id: event.id,
         category: event.category,
         title: titleController.text,
         description: descriptionController.text,
         dateTime: dateTime,
       );
-      FirebaseService.createEvent(eventModified).then((_) {
+      FirebaseService.onEditEvent(event).then((_) {
         Navigator.of(context).pop();
       });
     }
