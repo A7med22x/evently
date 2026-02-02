@@ -1,5 +1,6 @@
 import 'package:evently/app_theme.dart';
 import 'package:evently/auth/login_screen.dart';
+import 'package:evently/firebase_service.dart';
 import 'package:evently/home_screen.dart';
 import 'package:evently/widgets/default_elevated_button.dart';
 import 'package:evently/widgets/default_text_form_filed.dart';
@@ -136,7 +137,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void register() {
     if (formKey.currentState!.validate()) {
-      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      FirebaseService.register(
+        name: nameController.text,
+        email: emailController.text,
+        password: passwordController.text,
+      ).then((user){
+        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      });
     }
   }
 }
