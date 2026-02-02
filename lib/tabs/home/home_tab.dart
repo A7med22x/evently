@@ -1,23 +1,14 @@
 import 'package:evently/eventScreens/event_details.dart';
-import 'package:evently/firebase_service.dart';
-import 'package:evently/models/event_model.dart';
+import 'package:evently/providers/events_providers.dart';
 import 'package:evently/tabs/home/home_header.dart';
 import 'package:evently/widgets/event_item.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class HomeTab extends StatefulWidget {
-  @override
-  State<HomeTab> createState() => _HomeTabState();
-}
-
-class _HomeTabState extends State<HomeTab> {
-  List<EventModel> events = [];
-
+class HomeTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    if (events.isEmpty) {
-      getEvents();
-    }
+    EventsProviders eventsProviders = Provider.of<EventsProviders>(context);
     return Column(
       children: [
         HomeHeader(),
@@ -27,19 +18,18 @@ class _HomeTabState extends State<HomeTab> {
             padding: EdgeInsets.symmetric(horizontal: 16),
             itemBuilder: (_, index) => InkWell(
               onTap: () {
-                Navigator.of(context).pushNamed(EventDetails.routeName, arguments: events[index]);
+                Navigator.of(context).pushNamed(
+                  EventDetails.routeName,
+                  arguments: eventsProviders.allEvents[index],
+                );
               },
-              child: EventItem(events[index])),
+              child: EventItem(eventsProviders.allEvents[index]),
+            ),
             separatorBuilder: (_, _) => SizedBox(height: 16),
-            itemCount: events.length,
+            itemCount: eventsProviders.allEvents.length,
           ),
         ),
       ],
     );
-  }
-
-  Future<void> getEvents() async {
-    events = await FirebaseService.getEvents();
-    setState(() {});
   }
 }

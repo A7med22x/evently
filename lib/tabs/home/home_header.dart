@@ -1,10 +1,10 @@
 import 'package:evently/models/category_model.dart';
 import 'package:evently/models/user_model.dart';
+import 'package:evently/providers/events_providers.dart';
 import 'package:evently/providers/user_provider.dart';
 import 'package:evently/tabs/home/tab_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 
 class HomeHeader extends StatefulWidget {
   @override
@@ -56,6 +56,13 @@ class _HomeHeaderState extends State<HomeHeader> {
               onTap: (index) {
                 if (currentIndex == index) return;
                 currentIndex = index;
+                CategoryModel? selectedCategory = index == 0
+                    ? null
+                    : CategoryModel.Categories[index - 1];
+                Provider.of<EventsProviders>(
+                  context,
+                  listen: false,
+                ).filterEvents(selectedCategory);
                 setState(() {});
               },
             ),

@@ -6,6 +6,7 @@ import 'package:evently/eventScreens/edit_event_screen.dart';
 import 'package:evently/eventScreens/event_details.dart';
 import 'package:evently/home_screen.dart';
 import 'package:evently/intro_screens/intro_screen.dart';
+import 'package:evently/providers/events_providers.dart';
 import 'package:evently/providers/user_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,11 @@ Future<void> main() async {
   final hasSeenIntro = preferences.getBool('hasSeenIntro') ?? false;
   await Firebase.initializeApp();
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => UserProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => EventsProviders()..getEvents()),
+      ],
       child: EventlyApp(hasSeenIntro: hasSeenIntro),
     ),
   );
