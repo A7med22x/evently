@@ -5,6 +5,7 @@ import 'package:evently/tabs/home/tab_item.dart';
 import 'package:evently/widgets/arrow_back.dart';
 import 'package:evently/widgets/default_elevated_button.dart';
 import 'package:evently/widgets/default_text_form_filed.dart';
+import 'package:evently/widgets/ui_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -198,8 +199,12 @@ class _EditEventScreenState extends State<EditEventScreen> {
         dateTime: dateTime,
       );
       FirebaseService.onEditEvent(event).then((_) {
-        Navigator.of(context).pop();
-      });
+            Navigator.of(context).pop();
+            UiUtils.showSuccessMessage('Event updated successfully');
+          })
+          .catchError((_) {
+            UiUtils.showErrorMessage('Failed to update event');
+          });
     }
   }
 }

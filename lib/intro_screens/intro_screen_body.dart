@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:evently/app_theme.dart';
 import 'package:evently/widgets/default_elevated_button.dart';
 import 'package:flutter/material.dart';
