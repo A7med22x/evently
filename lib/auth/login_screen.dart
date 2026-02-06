@@ -106,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: screenHeight * 0.03),
                 DefaultElevatedButton(
-                  onPressed: () {},
+                  onPressed: loginWithGoogle,
                   label: 'Login with Google',
                   icon: 'google',
                   foregroundColor: AppTheme.primaryLight,
@@ -123,18 +123,41 @@ class _LoginScreenState extends State<LoginScreen> {
   void login() {
     if (formKey.currentState!.validate()) {
       FirebaseService.login(
-                email: emailController.text,
-        password: passwordController.text,
-      ).then((user){
-        Provider.of<UserProvider>(context, listen: false).updateCurrentUser(user);
-        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-      }).catchError((error){
-        String? errorMessage;
-        if (error is FirebaseAuthException) {
-          errorMessage = error.message;
-        } 
-        UiUtils.showErrorMessage(errorMessage);
-      });
+            email: emailController.text,
+            password: passwordController.text,
+          )
+          .then((user) {
+            Provider.of<UserProvider>(
+              context,
+              listen: false,
+            ).updateCurrentUser(user);
+            Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+          })
+          .catchError((error) {
+            String? errorMessage;
+            if (error is FirebaseAuthException) {
+              errorMessage = error.message;
+            }
+            UiUtils.showErrorMessage(errorMessage);
+          });
     }
+  }
+
+  void loginWithGoogle() {
+    FirebaseService.loginWithGoogle()
+        .then((user) {
+          Provider.of<UserProvider>(
+            context,
+            listen: false,
+          ).updateCurrentUser(user);
+          Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+        })
+        .catchError((error) {
+          String? errorMessage;
+          if (error is FirebaseAuthException) {
+            errorMessage = error.message;
+          }
+          UiUtils.showErrorMessage(errorMessage);
+        });
   }
 }

@@ -4,7 +4,6 @@ import 'package:evently/firebase_service.dart';
 import 'package:evently/models/event_model.dart';
 import 'package:evently/widgets/arrow_back.dart';
 import 'package:evently/widgets/default_text_form_filed.dart';
-import 'package:evently/widgets/ui_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -55,7 +54,6 @@ class EventDetails extends StatelessWidget {
               onPressed: () {
                 FirebaseService.onEventDelete(event).then((_) {
                   Navigator.of(context).pop();
-                  UiUtils.showSuccessMessage('Event deleted successfully');
                 });
               },
               icon: SvgPicture.asset('assets/icons/trash.svg'),

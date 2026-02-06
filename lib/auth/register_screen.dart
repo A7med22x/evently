@@ -125,7 +125,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 SizedBox(height: screenHeight * 0.03),
                 DefaultElevatedButton(
-                  onPressed: () {},
+                  onPressed: registerWithGoogle,
                   label: 'Register with Google',
                   icon: 'google',
                   foregroundColor: AppTheme.primaryLight,
@@ -142,19 +142,42 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void register() {
     if (formKey.currentState!.validate()) {
       FirebaseService.register(
-        name: nameController.text,
-        email: emailController.text,
-        password: passwordController.text,
-      ).then((user){
-        Provider.of<UserProvider>(context, listen: false).updateCurrentUser(user);
-        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-      }).catchError((error){
-        String? errorMessage;
-        if (error is FirebaseAuthException) {
-          errorMessage = error.message;
-        } 
-        UiUtils.showErrorMessage(errorMessage);
-      });
+            name: nameController.text,
+            email: emailController.text,
+            password: passwordController.text,
+          )
+          .then((user) {
+            Provider.of<UserProvider>(
+              context,
+              listen: false,
+            ).updateCurrentUser(user);
+            Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+          })
+          .catchError((error) {
+            String? errorMessage;
+            if (error is FirebaseAuthException) {
+              errorMessage = error.message;
+            }
+            UiUtils.showErrorMessage(errorMessage);
+          });
     }
+  }
+
+  void registerWithGoogle() {
+    FirebaseService.registerWithGoogle()
+        .then((user) {
+          Provider.of<UserProvider>(
+            context,
+            listen: false,
+          ).updateCurrentUser(user);
+          Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+        })
+        .catchError((error) {
+          String? errorMessage;
+          if (error is FirebaseAuthException) {
+            errorMessage = error.message;
+          }
+          UiUtils.showErrorMessage(errorMessage);
+        });
   }
 }

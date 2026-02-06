@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evently/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:evently/models/event_model.dart';
 
 class FirebaseService {
@@ -88,4 +89,57 @@ class FirebaseService {
   }
 
   static Future<void> logout() => FirebaseAuth.instance.signOut();
+
+  static Future<UserModel> registerWithGoogle() async {
+    GoogleSignIn googleSignIn = GoogleSignIn.instance;
+    await GoogleSignIn.instance.initialize(
+      clientId:
+          "123054204839-7brd2cifr1fsdv3lf2332odsscbdiiad.apps.googleusercontent.com",
+      serverClientId:
+          "123054204839-dbgf4nkpnp3ib29cv5a240ilron7fgn6.apps.googleusercontent.com",
+    );
+    GoogleSignInAccount account = await googleSignIn.authenticate();
+    GoogleSignInAuthentication googleAuth = account.authentication;
+    AuthCredential credential = GoogleAuthProvider.credential(
+      idToken: googleAuth.idToken,
+    );
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithCredential(credential);
+
+    UserModel user = UserModel(
+      id: userCredential.user!.uid,
+      name:
+          userCredential.user!.displayName ??
+          account.displayName ??
+          'User Name',
+      email: userCredential.user!.email ?? account.email,
+    );
+
+    CollectionReference<UserModel> userCollection = getUserCollection();
+    userCollection.doc(user.id).set(user);
+    return user;
+  }
+
+  static Future<UserModel> loginWithGoogle() async {
+    GoogleSignIn googleSignIn = GoogleSignIn.instance;
+    await GoogleSignIn.instance.initialize(
+      clientId:
+          "123054204839-7brd2cifr1fsdv3lf2332odsscbdiiad.apps.googleusercontent.com",
+      serverClientId:
+          "123054204839-dbgf4nkpnp3ib29cv5a240ilron7fgn6.apps.googleusercontent.com",
+    );
+    GoogleSignInAccount account = await googleSignIn.authenticate();
+    GoogleSignInAuthentication googleAuth = account.authentication;
+    AuthCredential credential = GoogleAuthProvider.credential(
+      idToken: googleAuth.idToken,
+    );
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithCredential(credential);
+
+    CollectionReference<UserModel> userCollection = getUserCollection();
+    DocumentSnapshot<UserModel> docSnapshot = await userCollection
+        .doc(userCredential.user!.uid)
+        .get();
+    return docSnapshot.data()!;
+  }
 }
