@@ -1,6 +1,6 @@
-import 'package:evently/firebase_service.dart';
 import 'package:evently/models/category_model.dart';
 import 'package:evently/models/event_model.dart';
+import 'package:evently/providers/events_providers.dart';
 import 'package:evently/tabs/home/tab_item.dart';
 import 'package:evently/widgets/arrow_back.dart';
 import 'package:evently/widgets/default_elevated_button.dart';
@@ -9,6 +9,7 @@ import 'package:evently/widgets/ui_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class EditEventScreen extends StatefulWidget {
   static const String routeName = '/edit event';
@@ -18,7 +19,6 @@ class EditEventScreen extends StatefulWidget {
 }
 
 class _EditEventScreenState extends State<EditEventScreen> {
-  int currentIndex = 0;
   late EventModel event;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController titleController = TextEditingController();
@@ -38,6 +38,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
+    int currentIndex = CategoryModel.Categories.indexOf(event.category);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -198,8 +199,10 @@ class _EditEventScreenState extends State<EditEventScreen> {
         description: descriptionController.text,
         dateTime: dateTime,
       );
-      FirebaseService.onEditEvent(event).then((_) {
-            Navigator.of(context).pop();
+      Provider.of<EventsProviders>(context, listen: false)
+          .updateEvent(event)
+          .then((_) {
+            Navigator.of(context).popUntil((route) => route.isFirst);
             UiUtils.showSuccessMessage('Event updated successfully');
           })
           .catchError((_) {

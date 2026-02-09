@@ -37,13 +37,13 @@ class FirebaseService {
     return querySnapshot.docs.map((docSnapshot) => docSnapshot.data()).toList();
   }
 
-  static Future<void> onEventDelete(EventModel event) {
+  static Future<void> deleteEvent(EventModel event) {
     CollectionReference<EventModel> eventCollection = getEventCollection();
     DocumentReference<EventModel> doc = eventCollection.doc(event.id);
     return doc.delete();
   }
 
-  static Future<void> onEditEvent(EventModel event) {
+  static Future<void> updateEvent(EventModel event) {
     CollectionReference<EventModel> eventCollection = getEventCollection();
     DocumentReference<EventModel> doc = eventCollection.doc(event.id);
 
@@ -67,6 +67,7 @@ class FirebaseService {
       id: credential.user!.uid,
       name: name,
       email: email,
+      favoriteEventsIds: [],
     );
 
     CollectionReference<UserModel> userCollection = getUserCollection();
@@ -113,6 +114,7 @@ class FirebaseService {
           account.displayName ??
           'User Name',
       email: userCredential.user!.email ?? account.email,
+      favoriteEventsIds: [],
     );
 
     CollectionReference<UserModel> userCollection = getUserCollection();
@@ -141,5 +143,19 @@ class FirebaseService {
         .doc(userCredential.user!.uid)
         .get();
     return docSnapshot.data()!;
+  }
+
+  static Future<void> addEventToFavorites(String eventId) async{
+    CollectionReference<UserModel> userCollection = getUserCollection();
+    DocumentReference<UserModel> userDoc = userCollection
+        .doc(FirebaseAuth.instance.currentUser!.uid);
+        return userDoc.update({'favoriteEventsIds': FieldValue.arrayUnion([eventId])});
+  }
+
+  static Future<void> removeEventFromFavorites(String eventId) async{
+    CollectionReference<UserModel> userCollection = getUserCollection();
+    DocumentReference<UserModel> userDoc = userCollection
+        .doc(FirebaseAuth.instance.currentUser!.uid);
+        return userDoc.update({'favoriteEventsIds': FieldValue.arrayRemove([eventId])});
   }
 }

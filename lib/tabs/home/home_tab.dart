@@ -20,13 +20,13 @@ class HomeTab extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).pushNamed(
                   EventDetails.routeName,
-                  arguments: eventsProviders.allEvents[index],
+                  arguments: eventsProviders.displayedEvents[index],
                 );
               },
-              child: EventItem(eventsProviders.allEvents[index]),
+              child: EventItem(eventsProviders.displayedEvents[index]),
             ),
             separatorBuilder: (_, _) => SizedBox(height: 16),
-            itemCount: eventsProviders.allEvents.length,
+            itemCount: eventsProviders.displayedEvents.length,
           ),
         ),
       ],
