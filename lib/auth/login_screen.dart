@@ -2,6 +2,7 @@ import 'package:evently/app_theme.dart';
 import 'package:evently/auth/register_screen.dart';
 import 'package:evently/firebase_service.dart';
 import 'package:evently/home_screen.dart';
+import 'package:evently/providers/settings_provider.dart';
 import 'package:evently/providers/user_provider.dart';
 import 'package:evently/widgets/default_elevated_button.dart';
 import 'package:evently/widgets/default_text_form_filed.dart';
@@ -26,6 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     double screenHeight = MediaQuery.sizeOf(context).height;
+    SettingsProvider settingspProvider = Provider.of<SettingsProvider>(context);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -39,7 +41,9 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 SizedBox(height: 24),
                 Center(
-                  child: Image.asset('assets/images/logo.png', height: 27),
+                  child: settingspProvider.isDark
+                      ? Image.asset('assets/images/logo_dark.png', height: 27)
+                      : Image.asset('assets/images/logo.png', height: 27),
                 ),
                 SizedBox(height: screenHeight * 0.03),
                 Text('Login to your account', style: textTheme.headlineSmall),
@@ -96,21 +100,49 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 SizedBox(height: screenHeight * 0.03),
-                Center(
-                  child: Text(
-                    'Or',
-                    style: textTheme.titleMedium!.copyWith(
-                      color: AppTheme.primaryLight,
+                Row(
+                  mainAxisAlignment: .spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        thickness: 1,
+                        endIndent: 16,
+                        color: settingspProvider.isDark
+                            ? AppTheme.darkBlue
+                            : AppTheme.offWhite,
+                      ),
                     ),
-                  ),
+                    Text(
+                      'Or',
+                      style: textTheme.titleMedium!.copyWith(
+                        color: settingspProvider.isDark
+                            ? AppTheme.primaryDark
+                            : AppTheme.primaryLight,
+                      ),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        indent: 16,
+                        thickness: 1,
+                        color: settingspProvider.isDark
+                            ? AppTheme.darkBlue
+                            : AppTheme.offWhite,
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(height: screenHeight * 0.03),
                 DefaultElevatedButton(
                   onPressed: loginWithGoogle,
                   label: 'Login with Google',
                   icon: 'google',
-                  foregroundColor: AppTheme.primaryLight,
-                  backgroundColor: AppTheme.white,
+                  border: AppTheme.darkBlue,
+                  foregroundColor: settingspProvider.isDark
+                      ? AppTheme.primaryDark
+                      : AppTheme.primaryLight,
+                  backgroundColor: settingspProvider.isDark
+                      ? AppTheme.navy
+                      : AppTheme.white,
                 ),
               ],
             ),

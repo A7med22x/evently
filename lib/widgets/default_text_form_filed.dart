@@ -75,6 +75,7 @@ class _DefaultTextFormFiledState extends State<DefaultTextFormFiled> {
       onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
       maxLines: widget.maxLines,
       readOnly: widget.readOnly,
+      style: Theme.of(context).textTheme.titleMedium,
     );
   }
 }

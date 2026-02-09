@@ -3,6 +3,7 @@ import 'package:evently/auth/login_screen.dart';
 import 'package:evently/firebase_service.dart';
 import 'package:evently/models/language_model.dart';
 import 'package:evently/models/user_model.dart';
+import 'package:evently/providers/settings_provider.dart';
 import 'package:evently/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,6 +14,7 @@ class ProfileTab extends StatelessWidget {
   Widget build(BuildContext context) {
     UserModel currentUser = Provider.of<UserProvider>(context).currentUser!;
     TextTheme textTheme = Theme.of(context).textTheme;
+    SettingsProvider settingspProvider = Provider.of<SettingsProvider>(context);
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16),
@@ -32,8 +34,10 @@ class ProfileTab extends StatelessWidget {
           Text(currentUser.email, style: textTheme.titleSmall),
           SizedBox(height: 32),
           SwitchListTile(
-            value: true,
-            onChanged: (value) {},
+            value: settingspProvider.isDark,
+            onChanged: (isDark) {
+              settingspProvider.changeTheme(isDark ? .dark : .light);
+            },
             title: Text('Dark mode'),
             activeTrackColor: Theme.of(context).primaryColor,
             inactiveTrackColor: AppTheme.lightGrey,

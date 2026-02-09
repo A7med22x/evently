@@ -12,9 +12,13 @@ class AppTheme {
   static const Color grey = Color(0xffB9B9B9);
   static const Color lightGrey = Color(0xffE9EAEB);
   static const Color red = Color(0xffFF3232);
+  static const Color navy = Color(0xff001440);
+  static const Color darkBlue = Color(0xff002D8F);
+  static const Color silver = Color(0xffD6D6D6);
   static const Color green = Colors.green;
 
   static ThemeData lightTheme = ThemeData(
+    primaryColor: primaryLight,
     scaffoldBackgroundColor: backgroundLight,
     appBarTheme: AppBarThemeData(
       backgroundColor: backgroundLight,
@@ -66,7 +70,7 @@ class AppTheme {
         backgroundColor: primaryLight,
         foregroundColor: white,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadiusGeometry.circular(16),
+          borderRadius: BorderRadius.circular(16),
         ),
         textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
       ),
@@ -118,5 +122,109 @@ class AppTheme {
     ),
   );
 
-  static ThemeData darkTheme = ThemeData();
+  static ThemeData darkTheme = ThemeData(
+    primaryColor: primaryDark,
+    scaffoldBackgroundColor: backgroundDark,
+    appBarTheme: AppBarThemeData(
+      backgroundColor: backgroundDark,
+      centerTitle: true,
+      titleTextStyle: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        color: white,
+      ),
+    ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: backgroundDark,
+      selectedItemColor: primaryDark,
+      unselectedItemColor: darkGrey,
+      type: .fixed,
+    ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: primaryDark,
+      foregroundColor: white,
+      shape: CircleBorder(),
+    ),
+    inputDecorationTheme: InputDecorationThemeData(
+      filled: true,
+      fillColor: navy,
+      hintStyle: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: darkGrey,
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: darkBlue),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: red),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: red),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: darkBlue),
+      ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: primaryDark,
+        foregroundColor: white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.circular(16),
+        ),
+        textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: primaryDark,
+        textStyle: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          decoration: .underline,
+        ),
+      ),
+    ),
+    listTileTheme: ListTileThemeData(
+      tileColor: navy,
+      minTileHeight: 0,
+      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: darkBlue),
+      ),
+      titleTextStyle: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w500,
+        color: white,
+      ),
+    ),
+    textTheme: TextTheme(
+      headlineSmall: TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.w600,
+        color: white,
+      ),
+      titleLarge: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w500,
+        color: white,
+      ),
+      titleMedium: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+        color: white,
+      ),
+      titleSmall: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: white,
+      ),
+    ),
+  );
 }

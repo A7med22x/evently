@@ -1,7 +1,10 @@
 import 'package:evently/app_theme.dart';
+import 'package:evently/providers/settings_provider.dart';
 import 'package:evently/widgets/default_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class IntroScreenBody extends StatelessWidget {
   String header;
@@ -21,7 +24,9 @@ class IntroScreenBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-    bool isDarkTheme = false;
+    SettingsProvider settingspProvider = Provider.of<SettingsProvider>(context);
+    SharedPreferences preferences;
+    bool isDarkTheme = settingspProvider.isDark;
 
     return Column(
       children: [
@@ -35,7 +40,7 @@ class IntroScreenBody extends StatelessWidget {
             body,
             style: textTheme.titleMedium!.copyWith(
               fontWeight: FontWeight.w400,
-              color: AppTheme.darkGrey,
+              color: isDarkTheme ? AppTheme.silver : AppTheme.darkGrey,
             ),
           ),
         ),
@@ -52,7 +57,9 @@ class IntroScreenBody extends StatelessWidget {
                         style: textTheme.titleMedium!.copyWith(
                           fontWeight: FontWeight.w500,
                           fontSize: 18,
-                          color: AppTheme.primaryLight,
+                          color: isDarkTheme
+                              ? AppTheme.white
+                              : AppTheme.primaryLight,
                         ),
                       ),
                       Row(
@@ -73,8 +80,15 @@ class IntroScreenBody extends StatelessWidget {
                             height: 32,
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            backgroundColor: AppTheme.white,
-                            foregroundColor: AppTheme.primaryLight,
+                            backgroundColor: isDarkTheme
+                                ? AppTheme.navy
+                                : AppTheme.white,
+                            foregroundColor: isDarkTheme
+                                ? AppTheme.white
+                                : AppTheme.primaryLight,
+                            border: isDarkTheme
+                                ? AppTheme.darkBlue
+                                : AppTheme.white,
                           ),
                         ],
                       ),
@@ -88,32 +102,61 @@ class IntroScreenBody extends StatelessWidget {
                         style: textTheme.titleMedium!.copyWith(
                           fontWeight: FontWeight.w500,
                           fontSize: 18,
-                          color: AppTheme.primaryLight,
+                          color: isDarkTheme
+                              ? AppTheme.white
+                              : AppTheme.primaryLight,
                         ),
                       ),
                       Row(
                         children: [
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              preferences = await .getInstance();
+                              preferences.setBool('isDarkTheme', false);
+                              isDarkTheme = true;
+                              settingspProvider.changeTheme(
+                                isDarkTheme ? .light : .dark,
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: isDarkTheme
+                                  ? AppTheme.navy
+                                  : AppTheme.primaryLight,
+                              side: BorderSide(
+                                color: isDarkTheme
+                                    ? AppTheme.darkBlue
+                                    : AppTheme.primaryLight,
+                              ),
+                            ),
                             child: SvgPicture.asset(
                               'assets/icons/light_theme.svg',
                               colorFilter: ColorFilter.mode(
-                                isDarkTheme
-                                    ? AppTheme.primaryLight
-                                    : AppTheme.white,
+                                AppTheme.white,
                                 BlendMode.srcIn,
                               ),
                             ),
                           ),
                           SizedBox(width: 8),
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              preferences = await .getInstance();
+                              preferences.setBool('isDarkTheme', true);
+                              isDarkTheme = false;
+                              settingspProvider.changeTheme(
+                                isDarkTheme ? .light : .dark,
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: isDarkTheme
+                                  ? AppTheme.primaryDark
+                                  : AppTheme.white,
+                            ),
                             child: SvgPicture.asset(
                               'assets/icons/dark_theme.svg',
                               colorFilter: ColorFilter.mode(
                                 isDarkTheme
-                                    ? AppTheme.primaryLight
-                                    : AppTheme.white,
+                                    ? AppTheme.white
+                                    : AppTheme.primaryLight,
                                 BlendMode.srcIn,
                               ),
                             ),

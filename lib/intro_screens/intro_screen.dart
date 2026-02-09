@@ -1,4 +1,4 @@
-import 'package:evently/home_screen.dart';
+import 'package:evently/auth/login_screen.dart';
 import 'package:evently/intro_screens/page_view_item.dart';
 import 'package:evently/models/intro_screen_model.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +73,7 @@ class _IntroScreenState extends State<IntroScreen> {
   }
 
   Future<void> onSkipBottonClicked(BuildContext context) async {
-    Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+    Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
 
     SharedPreferences preferences = await .getInstance();
     preferences.setBool('hasSeenIntro', true);

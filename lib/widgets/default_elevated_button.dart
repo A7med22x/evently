@@ -9,6 +9,7 @@ class DefaultElevatedButton extends StatelessWidget {
   FontWeight? fontWeight;
   Color? backgroundColor;
   Color? foregroundColor;
+  Color? border;
   String? icon;
 
   DefaultElevatedButton({
@@ -20,6 +21,7 @@ class DefaultElevatedButton extends StatelessWidget {
     this.fontWeight,
     this.backgroundColor,
     this.foregroundColor,
+    this.border,
     this.icon,
   });
 
@@ -30,6 +32,7 @@ class DefaultElevatedButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
         foregroundColor: foregroundColor,
+        side: border == null ? null : BorderSide(color: border!),
         fixedSize: Size(
           width ?? MediaQuery.sizeOf(context).width,
           height ?? 48,

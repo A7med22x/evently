@@ -7,6 +7,7 @@ import 'package:evently/eventScreens/event_details.dart';
 import 'package:evently/home_screen.dart';
 import 'package:evently/intro_screens/intro_screen.dart';
 import 'package:evently/providers/events_providers.dart';
+import 'package:evently/providers/settings_provider.dart';
 import 'package:evently/providers/user_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ Future<void> main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => EventsProviders()..getEvents()),
+        ChangeNotifierProvider(create: (_) => SettingsProvider()..loadTheme()),
       ],
       child: EventlyApp(hasSeenIntro: hasSeenIntro),
     ),
@@ -35,6 +37,8 @@ class EventlyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SettingsProvider settingspProvider = Provider.of<SettingsProvider>(context);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
@@ -46,12 +50,13 @@ class EventlyApp extends StatelessWidget {
         EventDetails.routeName: (_) => EventDetails(),
         EditEventScreen.routeName: (_) => EditEventScreen(),
       },
-      initialRoute: hasSeenIntro
-          ? LoginScreen.routeName
-          : IntroScreen.routeName,
+       initialRoute: //hasSeenIntro
+      //     ? LoginScreen.routeName
+      //     : 
+       IntroScreen.routeName,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.light,
+      themeMode: settingspProvider.themeMode,
     );
   }
 }
