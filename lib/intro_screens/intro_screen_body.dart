@@ -1,4 +1,5 @@
 import 'package:evently/app_theme.dart';
+import 'package:evently/l10n/app_localizations.dart';
 import 'package:evently/providers/settings_provider.dart';
 import 'package:evently/widgets/default_elevated_button.dart';
 import 'package:flutter/material.dart';
@@ -25,8 +26,7 @@ class IntroScreenBody extends StatelessWidget {
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     SettingsProvider settingspProvider = Provider.of<SettingsProvider>(context);
-    SharedPreferences preferences;
-    bool isDarkTheme = settingspProvider.isDark;
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
     return Column(
       children: [
@@ -40,7 +40,9 @@ class IntroScreenBody extends StatelessWidget {
             body,
             style: textTheme.titleMedium!.copyWith(
               fontWeight: FontWeight.w400,
-              color: isDarkTheme ? AppTheme.silver : AppTheme.darkGrey,
+              color: settingspProvider.isDark
+                  ? AppTheme.silver
+                  : AppTheme.darkGrey,
             ),
           ),
         ),
@@ -53,11 +55,11 @@ class IntroScreenBody extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Language',
+                        appLocalizations.language,
                         style: textTheme.titleMedium!.copyWith(
                           fontWeight: FontWeight.w500,
                           fontSize: 18,
-                          color: isDarkTheme
+                          color: settingspProvider.isDark
                               ? AppTheme.white
                               : AppTheme.primaryLight,
                         ),
@@ -65,28 +67,54 @@ class IntroScreenBody extends StatelessWidget {
                       Row(
                         children: [
                           DefaultElevatedButton(
-                            label: 'English',
-                            onPressed: () {},
-                            width: 100,
-                            height: 32,
+                            label: appLocalizations.english,
+                            onPressed: () {
+                              settingspProvider.changelanguage('en');
+                            },
+                            width: MediaQuery.sizeOf(context).width * 0.30,
+                            height: MediaQuery.sizeOf(context).height * 0.05,
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
+
+                            backgroundColor: settingspProvider.isDark
+                                ? settingspProvider.isEnglish
+                                      ? AppTheme.primaryDark
+                                      : AppTheme.navy
+                                : settingspProvider.isEnglish
+                                ? AppTheme.primaryLight
+                                : AppTheme.white,
+                            foregroundColor: settingspProvider.isDark
+                                ? AppTheme.white
+                                : settingspProvider.isEnglish
+                                ? AppTheme.white
+                                : AppTheme.primaryLight,
+                            border: settingspProvider.isDark
+                                ? AppTheme.darkBlue
+                                : AppTheme.white,
                           ),
                           SizedBox(width: 8),
                           DefaultElevatedButton(
-                            label: 'Arabic',
-                            onPressed: () {},
-                            width: 100,
-                            height: 32,
+                            label: appLocalizations.arabic,
+                            onPressed: () {
+                              settingspProvider.changelanguage('ar');
+                            },
+                            width: MediaQuery.sizeOf(context).width * 0.30,
+                            height: MediaQuery.sizeOf(context).height * 0.05,
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            backgroundColor: isDarkTheme
-                                ? AppTheme.navy
-                                : AppTheme.white,
-                            foregroundColor: isDarkTheme
+                            backgroundColor: settingspProvider.isDark
+                                ? settingspProvider.isEnglish
+                                      ? AppTheme.navy
+                                      : AppTheme.primaryDark
+                                : settingspProvider.isEnglish
                                 ? AppTheme.white
                                 : AppTheme.primaryLight,
-                            border: isDarkTheme
+                            foregroundColor: settingspProvider.isDark
+                                ? AppTheme.white
+                                : settingspProvider.isEnglish
+                                ? AppTheme.primaryLight
+                                : AppTheme.white,
+                            border: settingspProvider.isDark
                                 ? AppTheme.darkBlue
                                 : AppTheme.white,
                           ),
@@ -98,11 +126,11 @@ class IntroScreenBody extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Theme',
+                        appLocalizations.theme,
                         style: textTheme.titleMedium!.copyWith(
                           fontWeight: FontWeight.w500,
                           fontSize: 18,
-                          color: isDarkTheme
+                          color: settingspProvider.isDark
                               ? AppTheme.white
                               : AppTheme.primaryLight,
                         ),
@@ -111,19 +139,14 @@ class IntroScreenBody extends StatelessWidget {
                         children: [
                           ElevatedButton(
                             onPressed: () async {
-                              preferences = await .getInstance();
-                              preferences.setBool('isDarkTheme', false);
-                              isDarkTheme = true;
-                              settingspProvider.changeTheme(
-                                isDarkTheme ? .light : .dark,
-                              );
+                              settingspProvider.changeTheme(.light);
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: isDarkTheme
+                              backgroundColor: settingspProvider.isDark
                                   ? AppTheme.navy
                                   : AppTheme.primaryLight,
                               side: BorderSide(
-                                color: isDarkTheme
+                                color: settingspProvider.isDark
                                     ? AppTheme.darkBlue
                                     : AppTheme.primaryLight,
                               ),
@@ -139,22 +162,17 @@ class IntroScreenBody extends StatelessWidget {
                           SizedBox(width: 8),
                           ElevatedButton(
                             onPressed: () async {
-                              preferences = await .getInstance();
-                              preferences.setBool('isDarkTheme', true);
-                              isDarkTheme = false;
-                              settingspProvider.changeTheme(
-                                isDarkTheme ? .light : .dark,
-                              );
+                              settingspProvider.changeTheme(.dark);
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: isDarkTheme
+                              backgroundColor: settingspProvider.isDark
                                   ? AppTheme.primaryDark
                                   : AppTheme.white,
                             ),
                             child: SvgPicture.asset(
                               'assets/icons/dark_theme.svg',
                               colorFilter: ColorFilter.mode(
-                                isDarkTheme
+                                settingspProvider.isDark
                                     ? AppTheme.white
                                     : AppTheme.primaryLight,
                                 BlendMode.srcIn,

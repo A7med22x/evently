@@ -1,6 +1,8 @@
+import 'package:evently/l10n/app_localizations.dart';
 import 'package:evently/models/category_model.dart';
 import 'package:evently/models/event_model.dart';
 import 'package:evently/providers/events_providers.dart';
+import 'package:evently/providers/settings_provider.dart';
 import 'package:evently/tabs/home/tab_item.dart';
 import 'package:evently/widgets/arrow_back.dart';
 import 'package:evently/widgets/default_elevated_button.dart';
@@ -26,6 +28,8 @@ class _EditEventScreenState extends State<EditEventScreen> {
   late DateTime selectedDate = event.dateTime;
   late TimeOfDay selectedTime = TimeOfDay.fromDateTime(event.dateTime);
   DateFormat dateFormat = DateFormat('MMM d, yyy');
+  late AppLocalizations appLocalizations;
+
 
   @override
   void didChangeDependencies() {
@@ -37,12 +41,14 @@ class _EditEventScreenState extends State<EditEventScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SettingsProvider settingspProvider = Provider.of<SettingsProvider>(context);
     TextTheme textTheme = Theme.of(context).textTheme;
     int currentIndex = CategoryModel.Categories.indexOf(event.category);
+    appLocalizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(leading: ArrowBack(), title: Text('Edit event')),
+      appBar: AppBar(leading: ArrowBack(), title: Text(appLocalizations.editEvent)),
       body: Form(
         key: formKey,
         child: SingleChildScrollView(
@@ -53,7 +59,12 @@ class _EditEventScreenState extends State<EditEventScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: Image.asset(
+                  child: settingspProvider.isDark ? Image.asset(
+                    'assets/images/${event.category.imageName}_dark.png',
+                    width: .infinity,
+                    height: MediaQuery.sizeOf(context).height * 0.21,
+                    fit: .fill,
+                  ) : Image.asset(
                     'assets/images/${event.category.imageName}.png',
                     width: .infinity,
                     height: MediaQuery.sizeOf(context).height * 0.21,
@@ -95,27 +106,27 @@ class _EditEventScreenState extends State<EditEventScreen> {
                 child: Column(
                   crossAxisAlignment: .start,
                   children: [
-                    Text('Title', style: textTheme.titleMedium),
+                    Text(appLocalizations.title, style: textTheme.titleMedium),
                     SizedBox(height: 8),
                     DefaultTextFormFiled(
                       hintText: '',
                       controller: titleController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Title can not be empty';
+                          return appLocalizations.titleCanNotBeEmpty;
                         }
                         return null;
                       },
                     ),
                     SizedBox(height: 16),
-                    Text('Description', style: textTheme.titleMedium),
+                    Text(appLocalizations.description, style: textTheme.titleMedium),
                     SizedBox(height: 8),
                     DefaultTextFormFiled(
                       hintText: '',
                       controller: descriptionController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Description can not be empty';
+                          return appLocalizations.descriptionCanNotBeEmpty;
                         }
                         return null;
                       },
@@ -126,7 +137,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                       children: [
                         SvgPicture.asset('assets/icons/date.svg'),
                         SizedBox(width: 4),
-                        Text('Event Date', style: textTheme.titleMedium),
+                        Text(appLocalizations.eventDate, style: textTheme.titleMedium),
                         Spacer(),
                         TextButton(
                           onPressed: () async {
@@ -150,7 +161,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                       children: [
                         SvgPicture.asset('assets/icons/time.svg'),
                         SizedBox(width: 4),
-                        Text('Event Time', style: textTheme.titleMedium),
+                        Text(appLocalizations.eventTime, style: textTheme.titleMedium),
                         Spacer(),
                         TextButton(
                           onPressed: () async {
@@ -170,7 +181,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                     ),
                     SizedBox(height: 16),
                     DefaultElevatedButton(
-                      label: 'Update event',
+                      label: appLocalizations.updateEvent,
                       onPressed: updateEvent,
                     ),
                   ],
@@ -203,10 +214,10 @@ class _EditEventScreenState extends State<EditEventScreen> {
           .updateEvent(event)
           .then((_) {
             Navigator.of(context).popUntil((route) => route.isFirst);
-            UiUtils.showSuccessMessage('Event updated successfully');
+            UiUtils.showSuccessMessage(appLocalizations.eventUpdatedSuccessfully);
           })
           .catchError((_) {
-            UiUtils.showErrorMessage('Failed to update event');
+            UiUtils.showErrorMessage(appLocalizations.failedToUpdateEvent);
           });
     }
   }

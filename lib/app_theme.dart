@@ -69,9 +69,7 @@ class AppTheme {
       style: ElevatedButton.styleFrom(
         backgroundColor: primaryLight,
         foregroundColor: white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
       ),
     ),

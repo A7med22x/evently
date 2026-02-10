@@ -1,3 +1,4 @@
+import 'package:evently/l10n/app_localizations.dart';
 import 'package:evently/models/category_model.dart';
 import 'package:evently/models/user_model.dart';
 import 'package:evently/providers/events_providers.dart';
@@ -18,6 +19,7 @@ class _HomeHeaderState extends State<HomeHeader> {
   @override
   Widget build(BuildContext context) {
     UserModel currentUser = Provider.of<UserProvider>(context).currentUser!;
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     TextTheme textTheme = Theme.of(context).textTheme;
 
     return Padding(
@@ -25,7 +27,7 @@ class _HomeHeaderState extends State<HomeHeader> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Welcome Back ✨', style: textTheme.titleMedium),
+          Text(appLocalizations.welcomeBack, style: textTheme.titleMedium),
           SizedBox(height: 4),
           Text(currentUser.name, style: textTheme.titleLarge),
           SizedBox(height: 24),
@@ -39,7 +41,7 @@ class _HomeHeaderState extends State<HomeHeader> {
               labelPadding: EdgeInsets.only(right: 8),
               tabs: [
                 TabItem(
-                  tabName: 'All',
+                  tabName: appLocalizations.all,
                   iconName: 'all',
                   isSelected: currentIndex == 0,
                 ),

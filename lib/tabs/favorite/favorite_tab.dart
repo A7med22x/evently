@@ -1,3 +1,4 @@
+import 'package:evently/l10n/app_localizations.dart';
 import 'package:evently/providers/events_providers.dart';
 import 'package:evently/providers/user_provider.dart';
 import 'package:evently/widgets/default_text_form_filed.dart';
@@ -36,7 +37,7 @@ class _FavoriteTabState extends State<FavoriteTab> {
       child: Column(
         children: [
           DefaultTextFormFiled(
-            hintText: 'Search for event',
+            hintText: AppLocalizations.of(context)!.searchForEvent,
             suffixIconImageName: 'search',
             onChanged: (query) {},
           ),

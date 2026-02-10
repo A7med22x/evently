@@ -1,6 +1,7 @@
 import 'package:evently/app_theme.dart';
 import 'package:evently/auth/login_screen.dart';
 import 'package:evently/firebase_service.dart';
+import 'package:evently/l10n/app_localizations.dart';
 import 'package:evently/models/language_model.dart';
 import 'package:evently/models/user_model.dart';
 import 'package:evently/providers/settings_provider.dart';
@@ -15,6 +16,7 @@ class ProfileTab extends StatelessWidget {
     UserModel currentUser = Provider.of<UserProvider>(context).currentUser!;
     TextTheme textTheme = Theme.of(context).textTheme;
     SettingsProvider settingspProvider = Provider.of<SettingsProvider>(context);
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16),
@@ -38,7 +40,7 @@ class ProfileTab extends StatelessWidget {
             onChanged: (isDark) {
               settingspProvider.changeTheme(isDark ? .dark : .light);
             },
-            title: Text('Dark mode'),
+            title: Text(appLocalizations.darkMode),
             activeTrackColor: Theme.of(context).primaryColor,
             inactiveTrackColor: AppTheme.lightGrey,
             thumbColor: WidgetStatePropertyAll(AppTheme.white),
@@ -46,18 +48,23 @@ class ProfileTab extends StatelessWidget {
           ),
           SizedBox(height: 16),
           ListTile(
-            title: Text('Language'),
+            title: Text(appLocalizations.language),
             trailing: DropdownButton(
-              value: 'en',
+              value: settingspProvider.languageCode,
               items: LanguageModel.languages
                   .map(
                     (language) => DropdownMenuItem(
                       value: language.code,
-                      child: Text(language.name),
+                      child: Text(
+                        language.name
+                      ),
                     ),
                   )
                   .toList(),
-              onChanged: (value) {},
+              onChanged: (languageCode) {
+                if (languageCode == null) return;
+                settingspProvider.changelanguage(languageCode);
+              },
               dropdownColor: AppTheme.white,
               borderRadius: BorderRadius.circular(16),
               underline: SizedBox(),
@@ -65,7 +72,7 @@ class ProfileTab extends StatelessWidget {
           ),
           SizedBox(height: 16),
           ListTile(
-            title: Text('Logout'),
+            title: Text(appLocalizations.logout),
             trailing: SvgPicture.asset(
               'assets/icons/logout.svg',
               width: 24,

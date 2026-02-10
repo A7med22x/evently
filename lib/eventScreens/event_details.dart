@@ -1,7 +1,9 @@
 import 'package:evently/app_theme.dart';
 import 'package:evently/eventScreens/edit_event_screen.dart';
+import 'package:evently/l10n/app_localizations.dart';
 import 'package:evently/models/event_model.dart';
 import 'package:evently/providers/events_providers.dart';
+import 'package:evently/providers/settings_provider.dart';
 import 'package:evently/widgets/arrow_back.dart';
 import 'package:evently/widgets/default_text_form_filed.dart';
 import 'package:flutter/material.dart';
@@ -17,20 +19,29 @@ class EventDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     event = ModalRoute.of(context)!.settings.arguments as EventModel;
+    SettingsProvider settingspProvider = Provider.of<SettingsProvider>(context);
     TextTheme textTheme = Theme.of(context).textTheme;
     descriptionController = TextEditingController(text: event.description);
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
         leading: ArrowBack(),
-        title: Text('Event details'),
+        title: Text(appLocalizations.eventdetails),
         actions: [
           Container(
             width: 32,
             height: 32,
             decoration: BoxDecoration(
-              color: AppTheme.white,
+              color: settingspProvider.isDark
+                  ? AppTheme.navy
+                  : AppTheme.backgroundLight,
               borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: settingspProvider.isDark
+                    ? AppTheme.darkBlue
+                    : AppTheme.backgroundLight,
+              ),
             ),
             clipBehavior: .antiAlias,
             child: IconButton(
@@ -47,8 +58,15 @@ class EventDetails extends StatelessWidget {
             width: 32,
             height: 32,
             decoration: BoxDecoration(
-              color: AppTheme.white,
+              color: settingspProvider.isDark
+                  ? AppTheme.navy
+                  : AppTheme.backgroundLight,
               borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: settingspProvider.isDark
+                    ? AppTheme.darkBlue
+                    : AppTheme.backgroundLight,
+              ),
             ),
             clipBehavior: .antiAlias,
             child: IconButton(
@@ -73,12 +91,19 @@ class EventDetails extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: ClipRRect(
               borderRadius: BorderRadiusGeometry.circular(16),
-              child: Image.asset(
-                'assets/images/${event.category.imageName}.png',
-                width: .infinity,
-                height: MediaQuery.sizeOf(context).height * 0.21,
-                fit: .fill,
-              ),
+              child: settingspProvider.isDark
+                  ? Image.asset(
+                      'assets/images/${event.category.imageName}_dark.png',
+                      width: .infinity,
+                      height: MediaQuery.sizeOf(context).height * 0.21,
+                      fit: .fill,
+                    )
+                  : Image.asset(
+                      'assets/images/${event.category.imageName}.png',
+                      width: .infinity,
+                      height: MediaQuery.sizeOf(context).height * 0.21,
+                      fit: .fill,
+                    ),
             ),
           ),
           Padding(
@@ -94,7 +119,9 @@ class EventDetails extends StatelessWidget {
                 Container(
                   width: .infinity,
                   decoration: BoxDecoration(
-                    color: AppTheme.white,
+                    color: settingspProvider.isDark
+                        ? AppTheme.navy
+                        : AppTheme.white,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   clipBehavior: .antiAlias,
@@ -105,8 +132,15 @@ class EventDetails extends StatelessWidget {
                         height: 44,
                         margin: EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: AppTheme.backgroundLight,
+                          color: settingspProvider.isDark
+                              ? AppTheme.navy
+                              : AppTheme.backgroundLight,
                           borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: settingspProvider.isDark
+                                ? AppTheme.darkBlue
+                                : AppTheme.backgroundLight,
+                          ),
                         ),
                         child: SvgPicture.asset(
                           'assets/icons/date.svg',
@@ -133,7 +167,10 @@ class EventDetails extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 16),
-                Text('Description', style: textTheme.titleMedium),
+                Text(
+                  appLocalizations.description,
+                  style: textTheme.titleMedium,
+                ),
                 SizedBox(height: 8),
                 DefaultTextFormFiled(
                   hintText: '',

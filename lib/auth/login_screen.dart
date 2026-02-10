@@ -2,6 +2,7 @@ import 'package:evently/app_theme.dart';
 import 'package:evently/auth/register_screen.dart';
 import 'package:evently/firebase_service.dart';
 import 'package:evently/home_screen.dart';
+import 'package:evently/l10n/app_localizations.dart';
 import 'package:evently/providers/settings_provider.dart';
 import 'package:evently/providers/user_provider.dart';
 import 'package:evently/widgets/default_elevated_button.dart';
@@ -28,6 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
     TextTheme textTheme = Theme.of(context).textTheme;
     double screenHeight = MediaQuery.sizeOf(context).height;
     SettingsProvider settingspProvider = Provider.of<SettingsProvider>(context);
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -46,27 +48,27 @@ class _LoginScreenState extends State<LoginScreen> {
                       : Image.asset('assets/images/logo.png', height: 27),
                 ),
                 SizedBox(height: screenHeight * 0.03),
-                Text('Login to your account', style: textTheme.headlineSmall),
+                Text(appLocalizations.loginToYourAccount, style: textTheme.headlineSmall),
                 SizedBox(height: 24),
                 DefaultTextFormFiled(
-                  hintText: 'Enter your email',
+                  hintText: appLocalizations.enterYourEmail,
                   prefixIconImageName: 'email',
                   controller: emailController,
                   validator: (value) {
                     if (value == null || value.length < 5) {
-                      return 'Invalid emil';
+                      return appLocalizations.invalidEmail;
                     }
                     return null;
                   },
                 ),
                 SizedBox(height: 16),
                 DefaultTextFormFiled(
-                  hintText: 'Enter your password',
+                  hintText: appLocalizations.enterYourPassword,
                   prefixIconImageName: 'password',
                   controller: passwordController,
                   validator: (value) {
                     if (value == null || value.length < 8) {
-                      return 'Invalid password';
+                      return appLocalizations.invalidPassword;
                     }
                     return null;
                   },
@@ -76,17 +78,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   alignment: .centerRight,
                   child: TextButton(
                     onPressed: () {},
-                    child: Text('Forget Password?'),
+                    child: Text(appLocalizations.forgetPassword),
                   ),
                 ),
                 SizedBox(height: screenHeight * 0.04),
-                DefaultElevatedButton(label: 'Login', onPressed: login),
+                DefaultElevatedButton(label: appLocalizations.login, onPressed: login),
                 SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: .center,
                   children: [
                     Text(
-                      'Don’t have an account ?',
+                      appLocalizations.doNotHaveAnAccount,
                       style: textTheme.titleSmall,
                     ),
                     TextButton(
@@ -95,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           context,
                         ).pushReplacementNamed(RegisterScreen.routeName);
                       },
-                      child: Text('Register'),
+                      child: Text(appLocalizations.register),
                     ),
                   ],
                 ),
@@ -113,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     Text(
-                      'Or',
+                      appLocalizations.or,
                       style: textTheme.titleMedium!.copyWith(
                         color: settingspProvider.isDark
                             ? AppTheme.primaryDark
@@ -134,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: screenHeight * 0.03),
                 DefaultElevatedButton(
                   onPressed: loginWithGoogle,
-                  label: 'Login with Google',
+                  label: appLocalizations.loginWithGoogle,
                   icon: 'google',
                   border: AppTheme.darkBlue,
                   foregroundColor: settingspProvider.isDark
