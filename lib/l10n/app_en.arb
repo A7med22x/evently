@@ -55,5 +55,6 @@
     "welcomeBack": "Welcome Back ✨",
     "failedToUpdateEvent": "Failed to update event",
     "failedToCreateEvent": "Failed to create event",
-    "somethingWentWrong": "Something went wrong"
+    "somethingWentWrong": "Something went wrong",
+    "noResults": "No Results"
 }

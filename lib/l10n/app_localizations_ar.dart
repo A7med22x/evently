@@ -171,11 +171,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get welcomeBack => 'مرحبًا بعودتك ✨';
 
   @override
-  String get failedToUpdateEvent => 'Failed to update event';
+  String get failedToUpdateEvent => 'فشل في تحديث الحدث';
 
   @override
   String get failedToCreateEvent => 'فشل في إنشاء الحدث';
 
   @override
   String get somethingWentWrong => 'حدث خطأ ما';
+
+  @override
+  String get noResults => 'لا توجد نتائج';
 }

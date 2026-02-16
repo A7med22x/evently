@@ -50,10 +50,11 @@
     "titleCanNotBeEmpty": "لا يمكن أن يكون العنوان فارغًا",
     "descriptionCanNotBeEmpty": "لا يمكن أن يكون الوصف فارغًا",
     "eventUpdatedSuccessfully": "تم تحديث الحدث بنجاح",
+    "eventCreatedSuccessfully": "تم إنشاء الحدث بنجاح",
     "searchForEvent": "ابحث عن حدث",
     "welcomeBack": "مرحبًا بعودتك ✨",
-    "failedToUpdareEvent": "فشل في تحديث الحدث",
-    "somethingWentWrong": "حدث خطأ ما",
+    "failedToUpdateEvent": "فشل في تحديث الحدث",
     "failedToCreateEvent": "فشل في إنشاء الحدث",
-    "eventCreatedSuccessfully": "تم إنشاء الحدث بنجاح"
+    "somethingWentWrong": "حدث خطأ ما",
+    "noResults": "لا توجد نتائج"
 }

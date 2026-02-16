@@ -7,6 +7,7 @@ class EventsProviders with ChangeNotifier {
   List<EventModel> allEvents = [];
   List<EventModel> displayedEvents = [];
   List<EventModel> favoriteEvents = [];
+  List<EventModel> searchEvents = [];
 
   Future<void> getEvents() async {
     allEvents = await FirebaseService.getEvents();
@@ -17,8 +18,6 @@ class EventsProviders with ChangeNotifier {
   Future<void> addEvent(EventModel event) async {
     await FirebaseService.createEvent(event);
     await getEvents();
-    // allEvents.add(event);
-    // displayedEvents = allEvents;
     notifyListeners();
   }
 
@@ -31,8 +30,6 @@ class EventsProviders with ChangeNotifier {
   Future<void> deleteEvent(EventModel event) async {
     await FirebaseService.deleteEvent(event);
     await getEvents();
-    // allEvents.removeWhere((e) => e.id == event.id);
-    // displayedEvents = allEvents;
     notifyListeners();
   }
 
@@ -54,5 +51,21 @@ class EventsProviders with ChangeNotifier {
           .toList();
     }
     notifyListeners();
+  }
+
+  List<EventModel> searchForEvents(String query) {
+    if (query.isEmpty) {
+      searchEvents = [];
+    } else {
+      searchEvents = allEvents.where((event) {
+        return event.category.name.toLowerCase().contains(
+              query.toLowerCase(),
+            ) ||
+            event.title.toLowerCase().contains(query.toLowerCase()) ||
+            event.description.toLowerCase().contains(query.toLowerCase());
+      }).toList();
+    }
+    notifyListeners();
+    return searchEvents;
   }
 }
