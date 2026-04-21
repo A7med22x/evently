@@ -55,9 +55,7 @@ class ProfileTab extends StatelessWidget {
                   .map(
                     (language) => DropdownMenuItem(
                       value: language.code,
-                      child: Text(
-                        language.name
-                      ),
+                      child: Text(language.name),
                     ),
                   )
                   .toList(),
@@ -65,7 +63,9 @@ class ProfileTab extends StatelessWidget {
                 if (languageCode == null) return;
                 settingspProvider.changelanguage(languageCode);
               },
-              dropdownColor: AppTheme.white,
+              dropdownColor: settingspProvider.isDark
+                  ? AppTheme.navy
+                  : AppTheme.backgroundLight,
               borderRadius: BorderRadius.circular(16),
               underline: SizedBox(),
             ),

@@ -5,16 +5,15 @@ import 'package:evently/widgets/default_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class IntroScreenBody extends StatelessWidget {
-  String header;
-  String body;
-  String buttunName;
-  int currentIndex;
-  Function() onPressed;
+  final String header;
+  final String body;
+  final String buttunName;
+  final int currentIndex;
+  final Function() onPressed;
 
-  IntroScreenBody({
+  const IntroScreenBody({
     required this.header,
     required this.body,
     required this.buttunName,

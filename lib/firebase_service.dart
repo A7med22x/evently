@@ -47,12 +47,7 @@ class FirebaseService {
     CollectionReference<EventModel> eventCollection = getEventCollection();
     DocumentReference<EventModel> doc = eventCollection.doc(event.id);
 
-    return doc.update({
-      'categoryId': event.category.id,
-      'title': event.title,
-      'description': event.description,
-      'timestamp': Timestamp.fromDate(event.dateTime),
-    });
+    return doc.update(event.toJson());
   }
 
   static Future<UserModel> register({
