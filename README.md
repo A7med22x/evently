@@ -1,4 +1,4 @@
-# 📱 Islami App
+# 📱 Evently App
 
 A modern Flutter application for creating, managing, and exploring events with a clean UI and seamless user experience.
 
@@ -112,7 +112,6 @@ flutter run
 
 * Images: `assets/images/`
 * Icons: `assets/icons/`
-* Text files: `assets/texts/`
 
 ---
 
