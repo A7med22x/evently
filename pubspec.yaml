@@ -20,6 +20,7 @@ dependencies:
   provider: ^6.1.5+1
   fluttertoast: ^9.0.0
   google_sign_in: ^7.2.0
+  flutter_dotenv: ^6.0.1
   flutter_localizations:
     sdk: flutter
 
@@ -42,3 +43,4 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - .env

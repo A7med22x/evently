@@ -3,6 +3,8 @@ import 'package:evently/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:evently/models/event_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class FirebaseService {
   static CollectionReference<EventModel> getEventCollection() =>
@@ -65,6 +67,8 @@ class FirebaseService {
       favoriteEventsIds: [],
     );
 
+    saveUserId(credential.user!.uid);
+
     CollectionReference<UserModel> userCollection = getUserCollection();
     userCollection.doc(user.id).set(user);
     return user;
@@ -77,6 +81,8 @@ class FirebaseService {
     UserCredential credential = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
 
+    saveUserId(credential.user!.uid);
+
     CollectionReference<UserModel> userCollection = getUserCollection();
     DocumentSnapshot<UserModel> docSnapshot = await userCollection
         .doc(credential.user!.uid)
@@ -84,15 +90,16 @@ class FirebaseService {
     return docSnapshot.data()!;
   }
 
-  static Future<void> logout() => FirebaseAuth.instance.signOut();
+  static Future<void> logout() async {
+    saveUserId('');
+    FirebaseAuth.instance.signOut();
+  }
 
   static Future<UserModel> registerWithGoogle() async {
     GoogleSignIn googleSignIn = GoogleSignIn.instance;
     await GoogleSignIn.instance.initialize(
-      clientId:
-          "123054204839-7brd2cifr1fsdv3lf2332odsscbdiiad.apps.googleusercontent.com",
-      serverClientId:
-          "123054204839-dbgf4nkpnp3ib29cv5a240ilron7fgn6.apps.googleusercontent.com",
+      clientId: dotenv.env['CLIENT_ID'],
+      serverClientId: dotenv.env['SERVER_CLIENT_ID'],
     );
     GoogleSignInAccount account = await googleSignIn.authenticate();
     GoogleSignInAuthentication googleAuth = account.authentication;
@@ -112,6 +119,8 @@ class FirebaseService {
       favoriteEventsIds: [],
     );
 
+    saveUserId(userCredential.user!.uid);
+
     CollectionReference<UserModel> userCollection = getUserCollection();
     userCollection.doc(user.id).set(user);
     return user;
@@ -120,10 +129,8 @@ class FirebaseService {
   static Future<UserModel> loginWithGoogle() async {
     GoogleSignIn googleSignIn = GoogleSignIn.instance;
     await GoogleSignIn.instance.initialize(
-      clientId:
-          "123054204839-7brd2cifr1fsdv3lf2332odsscbdiiad.apps.googleusercontent.com",
-      serverClientId:
-          "123054204839-dbgf4nkpnp3ib29cv5a240ilron7fgn6.apps.googleusercontent.com",
+      clientId: dotenv.env['CLIENT_ID'],
+      serverClientId: dotenv.env['SERVER_CLIENT_ID'],
     );
     GoogleSignInAccount account = await googleSignIn.authenticate();
     GoogleSignInAuthentication googleAuth = account.authentication;
@@ -133,6 +140,8 @@ class FirebaseService {
     UserCredential userCredential = await FirebaseAuth.instance
         .signInWithCredential(credential);
 
+    saveUserId(userCredential.user!.uid);
+
     CollectionReference<UserModel> userCollection = getUserCollection();
     DocumentSnapshot<UserModel> docSnapshot = await userCollection
         .doc(userCredential.user!.uid)
@@ -140,17 +149,39 @@ class FirebaseService {
     return docSnapshot.data()!;
   }
 
-  static Future<void> addEventToFavorites(String eventId) async{
+  static Future<void> addEventToFavorites(String eventId) async {
     CollectionReference<UserModel> userCollection = getUserCollection();
-    DocumentReference<UserModel> userDoc = userCollection
-        .doc(FirebaseAuth.instance.currentUser!.uid);
-        return userDoc.update({'favoriteEventsIds': FieldValue.arrayUnion([eventId])});
+    DocumentReference<UserModel> userDoc = userCollection.doc(
+      FirebaseAuth.instance.currentUser!.uid,
+    );
+    return userDoc.update({
+      'favoriteEventsIds': FieldValue.arrayUnion([eventId]),
+    });
   }
 
-  static Future<void> removeEventFromFavorites(String eventId) async{
+  static Future<void> removeEventFromFavorites(String eventId) async {
     CollectionReference<UserModel> userCollection = getUserCollection();
-    DocumentReference<UserModel> userDoc = userCollection
-        .doc(FirebaseAuth.instance.currentUser!.uid);
-        return userDoc.update({'favoriteEventsIds': FieldValue.arrayRemove([eventId])});
+    DocumentReference<UserModel> userDoc = userCollection.doc(
+      FirebaseAuth.instance.currentUser!.uid,
+    );
+    return userDoc.update({
+      'favoriteEventsIds': FieldValue.arrayRemove([eventId]),
+    });
+  }
+
+  static Future<void> saveUserId(String id) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    await pref.setString('userId', id);
+  }
+
+  static Future<String> getUserId() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    return pref.getString('userId') ?? '';
+  }
+
+  static Future<UserModel?> getUserById(String id) async {
+    CollectionReference<UserModel> userCollection = getUserCollection();
+    DocumentSnapshot<UserModel> doc = await userCollection.doc(id).get();
+    return doc.data();
   }
 }
